@@ -9,5 +9,5 @@ eth-utils==1.10.0
 py-solc-x==1.1.0
 python-dotenv==0.19.2
 Flask-Cors==3.0.10
-requests==2.26.0
+requests==2.31.0
 gunicorn==20.1.0
