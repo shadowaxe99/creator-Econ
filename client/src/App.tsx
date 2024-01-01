@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/common/Header';
 import Footer from './components/common/Footer';
 import AssetList from './components/marketplace/AssetList';
@@ -16,13 +16,13 @@ const App: React.FC = () => {
         <div className="App">
           <Header />
           <main>
-            <Switch>
-              <Route exact path="/" component={AssetList} />
-              <Route path="/dashboard" component={CreatorDashboard} />
-              <Route path="/login" component={Login} />
-              <Route path="/signup" component={SignUp} />
+            <Routes>
+              <Route path="/" element={<AssetList />} />
+              <Route path="/dashboard" element={<CreatorDashboard />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<SignUp />} />
               {/* Additional routes can be added here */}
-            </Switch>
+            </Routes>
           </main>
           <Footer />
         </div>
