@@ -8,6 +8,7 @@ const CreatorDashboard: React.FC = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const [signUpError, setSignUpError] = useState('');
   const { signUp } = useContext(BlockchainContext);
   const history = useHistory();
 
@@ -21,7 +22,7 @@ const CreatorDashboard: React.FC = () => {
       await signUp(email, password);
       history.push('/dashboard');
     } catch (error) {
-      setError('Failed to create an account');
+      setSignUpError(error.message || 'An unexpected error occurred. Please try again.');
     }
   };
 
@@ -29,7 +30,7 @@ const CreatorDashboard: React.FC = () => {
     <div className="auth-container">
       <form className="auth-form" onSubmit={handleCreatorDashboard}>
         <h2>Sign Up</h2>
-        {error && <p className="error">{error}</p>}
+        {signUpError && <div className="error-message">{signUpError}</div>}
         <div className="form-group">
           <label htmlFor="email">Email</label>
           <input
