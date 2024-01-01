@@ -22,10 +22,10 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="auth-container">
-      <form className="auth-form" onSubmit={handleLogin}>
+    <div className="auth-container container">
+      <form className="auth-form form-signin mx-auto" onSubmit={handleLogin}>
         <h2>Login</h2>
-        <div className="form-group">
+        <div className="form-group mb-3">
           <label htmlFor="email">Email</label>
           <input
             type="email"
@@ -45,7 +45,7 @@ const Login: React.FC = () => {
             required
           />
         </div>
-        <button type="submit" className="auth-submit">Login</button>
+        <button type="submit" className="auth-submit btn btn-primary btn-block">Login</button>
       </form>
     </div>
   );
