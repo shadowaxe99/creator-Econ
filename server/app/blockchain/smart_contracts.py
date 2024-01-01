@@ -33,11 +33,27 @@ class SmartContractManager:
         })
         signed_txn = self.w3.eth.account.signTransaction(transaction, private_key=self.private_key)
         tx_hash = self.w3.eth.sendRawTransaction(signed_txn.rawTransaction)
-        receipt = self.w3.eth.waitForTransactionReceipt(tx_hash)
-        return receipt.status == 1
+        except Exception as e:
+            print('An error occurred during the purchase_asset operation:', e)
+            return False
+
+        try:
+            receipt = self.w3.eth.waitForTransactionReceipt(tx_hash)
+            return receipt.status == 1
+        except Exception as e:
+            print('An error occurred while waiting for the transaction receipt:', e)
+            return False
 
     def get_asset_details(self, asset_id: str) -> dict:
-        return self.contract.functions.getAssetDetails(asset_id).call()
+        except Exception as e:
+            print('An error occurred during the get_asset_details operation:', e)
+            return {}
+
+        try:
+            return self.contract.functions.getAssetDetails(asset_id).call()
+        except Exception as e:
+            print('An error occurred while getting the asset details:', e)
+            return {}
 
     def create_asset(self, title: str, description: str, price: int, image_url: str) -> bool:
         nonce = self.w3.eth.getTransactionCount(self.account.address)
@@ -50,5 +66,13 @@ class SmartContractManager:
         signed_txn = self.w3.eth.account.signTransaction(transaction, private_key=self.private_key)
         tx_hash = self.w3.eth.sendRawTransaction(signed_txn.rawTransaction)
         receipt = self.w3.eth.waitForTransactionReceipt(tx_hash)
-        return receipt.status == 1
+        except Exception as e:
+            print('An error occurred during the create_asset operation:', e)
+            return False
+
+        try:
+            return receipt.status == 1
+        except Exception as e:
+            print('An error occurred while creating the asset:', e)
+            return False
 ```
