@@ -11,13 +11,13 @@ class TokenManager:
         self.private_key = private_key
         self.contract = load_contract(web3, contract_address)
 
-    def deploy_token_contract(self, contract_source: str, initial_supply: int):
+    def deploy_token_contract(self, contract_source: str, initial_supply: int) -> str:
         compiled_sol = compile_source(contract_source)
         contract_id, contract_interface = compiled_sol.popitem()
         bytecode = contract_interface['bin']
         abi = contract_interface['abi']
 
-        # Create the contract in Python
+        # Create the contract in Python and optimize
         TokenContract = self.web3.eth.contract(abi=abi, bytecode=bytecode)
 
         # Get the latest transaction
@@ -42,7 +42,7 @@ class TokenManager:
 
         return tx_receipt.contractAddress
 
-    def transfer_tokens(self, to_address: str, amount: int):
+    def transfer_tokens(self, to_address: str, amount: int) -> Any:
         nonce = self.web3.eth.getTransactionCount(self.web3.eth.defaultAccount)
         txn_dict = self.contract.functions.transfer(to_address, amount).buildTransaction({
             'from': self.web3.eth.defaultAccount,
@@ -56,7 +56,7 @@ class TokenManager:
 
         return self.web3.eth.waitForTransactionReceipt(tx_hash)
 
-    def get_token_balance(self, address: str):
+    def get_token_balance(self, address: str) -> int:
         return self.contract.functions.balanceOf(address).call()
 
 # Example usage:
