@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { BlockchainContext } from '../context/BlockchainContext';
 import './auth.css'; // Assuming a corresponding CSS file for styling
 
-const SignUp: React.FC = () => {
+const CreatorDashboard: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -11,7 +11,7 @@ const SignUp: React.FC = () => {
   const { signUp } = useContext(BlockchainContext);
   const history = useHistory();
 
-  const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleCreatorDashboard = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       setError('Passwords do not match');
@@ -27,7 +27,7 @@ const SignUp: React.FC = () => {
 
   return (
     <div className="auth-container">
-      <form className="auth-form" onSubmit={handleSignUp}>
+      <form className="auth-form" onSubmit={handleCreatorDashboard}>
         <h2>Sign Up</h2>
         {error && <p className="error">{error}</p>}
         <div className="form-group">
@@ -66,4 +66,4 @@ const SignUp: React.FC = () => {
   );
 };
 
-export default SignUp;
+export default CreatorDashboard;
