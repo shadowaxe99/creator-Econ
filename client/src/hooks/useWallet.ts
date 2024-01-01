@@ -41,11 +41,15 @@ export const useWallet = () => {
 
   const getBalance = useCallback(async () => {
     if (provider && walletAddress) {
-      const balanceBigInt = await provider.getBalance(walletAddress);
-      const balanceInEth = ethers.utils.formatEther(balanceBigInt);
-      setBalance(balanceInEth);
+      try {
+        const balanceBigInt = await provider.getBalance(walletAddress);
+        const balanceInEth = ethers.utils.formatEther(balanceBigInt);
+        setBalance(balanceInEth);
+      } catch (error) {
+        console.error('An error occurred while retrieving the wallet balance:', error.message);
+      }
     }
-  }, [provider, walletAddress]);
+  }, [provider, walletAddress, setBalance]);
 
   useEffect(() => {
     checkWalletConnected();
