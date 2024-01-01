@@ -7,7 +7,7 @@ import CreatorDashboard from './components/dashboard/CreatorDashboard';
 import Login from './components/auth/Login';
 import SignUp from './components/auth/SignUp';
 import BlockchainContextProvider from './context/BlockchainContext';
-import './styles/globals.css';
+import './styles/globals.scss'; // Switch to SCSS for more complex styling
 
 const App: React.FC = () => {
   return (
@@ -32,3 +32,16 @@ const App: React.FC = () => {
 };
 
 export default App;
+// Add a loading state to improve UX during data fetching or other asynchronous operations
+const [isLoading, setIsLoading] = useState(false);
+
+// Wrap the routes with a loading state check
+{isLoading ? <LoadingComponent /> : (
+  <Routes>
+    <Route path="/" element={<AssetList />} />
+    <Route path="/dashboard" element={<CreatorDashboard />} />
+    <Route path="/login" element={<Login />} />
+    <Route path="/signup" element={<SignUp />} />
+    {/* Additional routes can be added here */}
+  </Routes>
+)}
