@@ -41,9 +41,10 @@ class APITestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue('Purchase successful' in response.get_data(as_text=True))
 
-        # Check if the asset is marked as sold
+        # Check if the asset is marked as sold in both the database and response data
         asset = Asset.query.get('1')
         self.assertTrue(asset.is_sold)
+        self.assertIn('is_sold', response.get_json())
 
     def test_purchase_nonexistent_asset(self):
         response = self.client.post('/api/assets/999/purchase', json={
@@ -51,6 +52,22 @@ class APITestCase(unittest.TestCase):
             'buyer_address': '0xMockAddress'
         })
         self.assertEqual(response.status_code, 404)
+
+    def test_purchase_with_invalid_asset_id(self):
+        # Test invalid asset ID
+        response = self.client.post('/api/assets/invalid/purchase', json={
+            'asset_id': 'invalid',
+            'buyer_address': '0xMockAddress'
+        })
+        self.assertEqual(response.status_code, 400)
+
+    def test_purchase_with_invalid_buyer_address(self):
+        # Test invalid blockchain address
+        response = self.client.post('/api/assets/1/purchase', json={
+            'asset_id': '1',
+            'buyer_address': ''
+        })
+        self.assertEqual(response.status_code, 400)
 
     def test_purchase_already_sold_asset(self):
         # Mark the asset as sold
