@@ -7,6 +7,7 @@ import './auth.css'; // Assuming a corresponding CSS file for styling
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
   const { login } = useContext(BlockchainContext);
   const history = useHistory();
 
@@ -16,8 +17,8 @@ const Login: React.FC = () => {
       await login(email, password);
       history.push('/dashboard');
     } catch (error) {
-      console.error('Login failed:', error);
-      // Handle login error (e.g., show error message to user)
+      // Set an error state to display to user
+      setErrorMsg('Failed to log in. Please check your credentials and try again.');
     }
   };
 
@@ -45,6 +46,7 @@ const Login: React.FC = () => {
             required
           />
         </div>
+        {errorMsg && <div className="alert alert-danger" role="alert">{errorMsg}</div>}
         <button type="submit" className="auth-submit btn btn-primary btn-block">Login</button>
       </form>
     </div>
