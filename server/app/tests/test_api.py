@@ -31,6 +31,16 @@ class APITestCase(unittest.TestCase):
         self.assertTrue('Mock Asset' in response.get_data(as_text=True))
 
     def test_purchase_asset(self):
+        # Existing mock and test code
+
+    def test_purchase_asset_invalid_data(self):
+        # Test asset purchase with invalid data
+        response = self.client.post('/api/assets/1/purchase', json={
+            'asset_id': '1',
+            'invalid_data': 'InvalidData'
+        })
+        self.assertEqual(response.status_code, 400)
+        self.assertTrue('Invalid purchase data' in response.get_data(as_text=True))
         # Mock the SmartContractManager to always return success
         SmartContractManager.purchase_asset = lambda self, asset_id, buyer_address: True
 
@@ -53,6 +63,18 @@ class APITestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 404)
 
     def test_purchase_already_sold_asset(self):
+        # Existing test code
+
+    def test_get_asset(self):
+        # Test fetching a single asset by id
+        response = self.client.get('/api/assets/1')
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('Mock Asset' in response.get_data(as_text=True))
+
+        # Test fetching a non-existent asset by id
+        response = self.client.get('/api/assets/999')
+        self.assertEqual(response.status_code, 404)
+        self.assertTrue('Asset not found' in response.get_data(as_text=True))
         # Mark the asset as sold
         self.mock_asset.is_sold = True
         db.session.commit()
