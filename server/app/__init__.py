@@ -12,8 +12,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from .config import Config
 from .api.routes import api_blueprint
-from .blockchain.smart_contracts import SmartContractManager
-from .blockchain.token_management import TokenManager
+from .blockchain.smart_contracts import SecureSmartContractManager as SmartContractManager
+from .blockchain.token_management import SecureTokenManager as TokenManager
 from .database.models import db
 from .ai_agents.content_creation import ContentCreationAgent  # Manages content creation features using AI
 from .ai_agents.productivity_enhancers import ProductivityEnhancer  # Manages productivity enhancement features using AI
@@ -42,8 +42,8 @@ def create_app():
     # Initialize blockchain-related components:
     # The SmartContractManager handles interactions with smart contracts.
     # The TokenManager is responsible for token-related operations.
-    app.smart_contract_manager = SmartContractManager()
-    app.token_manager = TokenManager()
+    app.smart_contract_manager = SmartContractManager(app.config['PRIVATE_KEY'])
+    app.token_manager = TokenManager(app.config['PRIVATE_KEY'])
 
     # Initialize AI-related components:
     # ContentCreationAgent is in charge of AI-driven content creation.
