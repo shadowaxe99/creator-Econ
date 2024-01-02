@@ -1,4 +1,4 @@
-```python
+
 import unittest
 from flask import current_app
 from app import create_app, db
@@ -53,9 +53,10 @@ class APITestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue('Purchase successful' in response.get_data(as_text=True))
 
-        # Check if the asset is marked as sold
+        # Check if the asset is marked as sold in both the database and response data
         asset = Asset.query.get('1')
         self.assertTrue(asset.is_sold)
+        self.assertIn('is_sold', response.get_json())
 
     def test_purchase_nonexistent_asset(self):
         response = self.client.post('/api/assets/999/purchase', json={
@@ -64,11 +65,7 @@ class APITestCase(unittest.TestCase):
         })
         self.assertEqual(response.status_code, 404)
 
-    def test_update_asset(self):
-        # TODO: Add tests to check the update functionality of the asset
-
-    def test_remove_asset(self):
-        # TODO: Add tests to verify the remove (delete) functionality
+<
 
     def test_purchase_already_sold_asset(self):
         # Existing test code
