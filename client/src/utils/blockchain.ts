@@ -5,9 +5,10 @@ import { IAsset } from '../interfaces/IAsset';
 
 // Assuming the ABI and contract address are available for the smart contract
 import contractABI from './contractABI.json';
-const contractAddress = '0x...'; // Replace with actual contract address
+const CONTRACT_ADDRESS = process.env.REACT_APP_CONTRACT_ADDRESS || ''; // Loaded from environment variables
 
 export const purchaseAsset = async (assetId: string, buyerAddress: string): Promise<boolean> => {
+  if (!ethers.utils.isAddress(buyerAddress)) throw new Error('Invalid buyer address');
   try {
     // Initialize Ethereum provider
     const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -23,7 +24,7 @@ export const purchaseAsset = async (assetId: string, buyerAddress: string): Prom
 
     return true;
   } catch (error) {
-    console.error('Error purchasing asset:', error);
+    throw new Error(`Error purchasing asset: ${error.message}`);
     return false;
   }
 };
@@ -43,7 +44,7 @@ export const fetchAssets = async (): Promise<IAsset[]> => {
       imageUrl: asset.imageUrl,
     }));
   } catch (error) {
-    console.error('Error fetching assets:', error);
+    throw new Error(`Error fetching assets: ${error.message}`);
     return [];
   }
 };

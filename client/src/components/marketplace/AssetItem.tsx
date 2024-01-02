@@ -42,4 +42,4 @@ const AssetItem: React.FC<AssetItemProps> = ({ id, title, description, price, im
   );
 };
 
-export default AssetItem;
+export default React.memo(AssetItem);
