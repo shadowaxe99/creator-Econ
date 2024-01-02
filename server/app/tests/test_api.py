@@ -5,6 +5,8 @@ from app import create_app, db
 from app.database.models import Asset
 from app.api.routes import api_blueprint
 from app.blockchain.smart_contracts import SmartContractManager
+from datetime import datetime
+from unittest.mock import patch
 
 class APITestCase(unittest.TestCase):
     def setUp(self):
@@ -61,6 +63,12 @@ class APITestCase(unittest.TestCase):
             'buyer_address': '0xMockAddress'
         })
         self.assertEqual(response.status_code, 404)
+
+    def test_update_asset(self):
+        # TODO: Add tests to check the update functionality of the asset
+
+    def test_remove_asset(self):
+        # TODO: Add tests to verify the remove (delete) functionality
 
     def test_purchase_already_sold_asset(self):
         # Existing test code

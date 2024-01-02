@@ -1,5 +1,6 @@
 ```typescript
 import React, { useState, useContext } from 'react';
+import './ErrorComponent.css'; // Assuming a corresponding CSS file for the error display
 import { useHistory } from 'react-router-dom';
 import { BlockchainContext } from '../context/BlockchainContext';
 import './auth.css'; // Assuming a corresponding CSS file for styling
@@ -9,6 +10,7 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState('');
 
   const { login } = useContext(BlockchainContext);
+  const [loginError, setLoginError] = useState('');
   const history = useHistory();
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -17,13 +19,10 @@ const Login: React.FC = () => {
       await login(email, password);
       history.push('/dashboard');
     } catch (error) {
-
-    }
   };
 
   return (
-    <div className="auth-container container">
-      <form className="auth-form form-signin mx-auto" onSubmit={handleLogin}>
+
         <h2>Login</h2>
 
           <label htmlFor="email">Email</label>
