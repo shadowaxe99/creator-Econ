@@ -8,7 +8,7 @@ class SmartContractManager:
     def __init__(self, provider_url: str, contract_source_code: str, contract_address: str, private_key: str):
         self.w3 = Web3(Web3.HTTPProvider(provider_url))
         self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
-        self.private_key = private_key
+        # self.private_key = private_key # Removed for security reasons, use account.encrypt method instead
         self.account = self.w3.eth.account.privateKeyToAccount(private_key)
         self.contract_source_code = contract_source_code
         self.contract_address = contract_address
@@ -23,32 +23,59 @@ class SmartContractManager:
         )
         return contract
 
-    def purchase_asset(self, asset_id: str, buyer_address: str) -> bool:
-        nonce = self.w3.eth.getTransactionCount(self.account.address)
+    def purchase_asset(self, asset_id: str, buyer_address: str, signer_account: Account) -> bool:
+        nonce = self.w3.eth.getTransactionCount(signer_account.address)
         transaction = self.contract.functions.purchaseAsset(asset_id, buyer_address).buildTransaction({
             'chainId': 1,
             'gas': 2000000,
-            'gasPrice': self.w3.toWei('50', 'gwei'),
+            'gasPrice': self.w3.eth.generateGasPrice(), 'chainId': self.w3.net.chainId
             'nonce': nonce
         })
-        signed_txn = self.w3.eth.account.signTransaction(transaction, private_key=self.private_key)
+        signed_txn = signer_account.signTransaction(transaction)
         tx_hash = self.w3.eth.sendRawTransaction(signed_txn.rawTransaction)
-        receipt = self.w3.eth.waitForTransactionReceipt(tx_hash)
-        return receipt.status == 1
+        try:
+            self.w3.eth.waitForTransactionReceipt(tx_hash)
+        except Exception as e:
+            print('An error occurred during the purchase_asset operation:', e)
+            return False
+
+        try:
+            receipt = self.w3.eth.waitForTransactionReceipt(tx_hash)
+            return receipt.status == 1
+        except Exception as e:
+            print('An error occurred while waiting for the transaction receipt:', e)
+            return False
 
     def get_asset_details(self, asset_id: str) -> dict:
-        return self.contract.functions.getAssetDetails(asset_id).call()
+        except Exception as e:
+            print('An error occurred during the get_asset_details operation:', e)
+            return {}
+
+        try:
+            return self.contract.functions.getAssetDetails(asset_id).call()
+        except Exception as e:
+            print('An error occurred while getting the asset details:', e)
+            return {}
 
     def create_asset(self, title: str, description: str, price: int, image_url: str) -> bool:
-        nonce = self.w3.eth.getTransactionCount(self.account.address)
+        nonce = self.w3.eth.getTransactionCount(signer_account.address)
         transaction = self.contract.functions.createAsset(title, description, price, image_url).buildTransaction({
-            'chainId': 1,
+            'gasPrice': self.w3.eth.generateGasPrice(), 'chainId': self.w3.net.chainId
+
             'gas': 2000000,
             'gasPrice': self.w3.toWei('50', 'gwei'),
             'nonce': nonce
         })
-        signed_txn = self.w3.eth.account.signTransaction(transaction, private_key=self.private_key)
+        signed_txn = signer_account.signTransaction(transaction)
         tx_hash = self.w3.eth.sendRawTransaction(signed_txn.rawTransaction)
         receipt = self.w3.eth.waitForTransactionReceipt(tx_hash)
-        return receipt.status == 1
+        except Exception as e:
+            print('An error occurred during the create_asset operation:', e)
+            return False
+
+        try:
+            return receipt.status == 1
+        except Exception as e:
+            print('An error occurred while creating the asset:', e)
+            return False
 ```

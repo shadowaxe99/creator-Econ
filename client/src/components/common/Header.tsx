@@ -8,21 +8,21 @@ const Header: React.FC = () => {
   const { walletAddress, connectWallet } = useWallet();
 
   return (
-    <header className="header">
-      <div className="logo">
-        <Link to="/">Elysium Marketplace</Link>
+    <header className="header" role="banner">
+      <div className="logo" role="img" aria-label="Elysium Marketplace Logo">
+        <Link to="/" aria-label="Home">Elysium Marketplace</Link>
       </div>
       <nav className="navigation">
         <ul>
-          <li><Link to="/marketplace">Marketplace</Link></li>
-          <li><Link to="/dashboard">Dashboard</Link></li>
+          <li><Link to="/marketplace" aria-label="Marketplace">Marketplace</Link></li>
+          <li><Link to="/dashboard" aria-label="Dashboard">Dashboard</Link></li>
         </ul>
       </nav>
       <div className="wallet-info">
         {walletAddress ? (
-          <span>{walletAddress}</span>
+          <span aria-label="Wallet Address">{walletAddress}</span>
         ) : (
-          <button onClick={connectWallet}>Connect Wallet</button>
+          <button onClick={connectWallet} aria-label="Connect Wallet" class="connect-wallet-button">Connect Wallet</button>
         )}
       </div>
     </header>

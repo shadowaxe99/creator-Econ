@@ -42,4 +42,4 @@ const AssetList: React.FC = () => {
   );
 };
 
-export default AssetList;
+export default React.memo(AssetList);

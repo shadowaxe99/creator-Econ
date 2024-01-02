@@ -5,7 +5,7 @@ import Footer from './components/common/Footer';
 import AssetList from './components/marketplace/AssetList';
 import CreatorDashboard from './components/dashboard/CreatorDashboard';
 import Login from './components/auth/Login';
-import SignUp from './components/auth/SignUp';
+import CreatorDashboard from './components/auth/CreatorDashboard';
 import BlockchainContextProvider from './context/BlockchainContext';
 import './styles/globals.scss'; // Using SCSS allows for advanced styling features like nested rules, variables, mixins, and more
 
