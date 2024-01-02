@@ -1,5 +1,6 @@
 ```typescript
 import React, { useState, useContext } from 'react';
+import './ErrorComponent.css'; // Assuming a corresponding CSS file for the error display
 import { useHistory } from 'react-router-dom';
 import { BlockchainContext } from '../context/BlockchainContext';
 import './auth.css'; // Assuming a corresponding CSS file for styling
@@ -7,8 +8,9 @@ import './auth.css'; // Assuming a corresponding CSS file for styling
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+
   const { login } = useContext(BlockchainContext);
+  const [loginError, setLoginError] = useState('');
   const history = useHistory();
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -17,17 +19,12 @@ const Login: React.FC = () => {
       await login(email, password);
       history.push('/dashboard');
     } catch (error) {
-      console.error('Login failed:', error);
-      setError('Login failed. Please check your credentials and try again.');
-    }
   };
 
   return (
-    <div className="auth-container">
-      <form className="auth-form" onSubmit={handleLogin}>
+
         <h2>Login</h2>
-        {error && <p className="error-message">{error}</p>}
-        <div className="form-group">
+
           <label htmlFor="email">Email</label>
           <input
             type="email"
@@ -47,7 +44,8 @@ const Login: React.FC = () => {
             required
           />
         </div>
-        <button type="submit" className="auth-submit">Login</button>
+        {errorMsg && <div className="alert alert-danger" role="alert">{errorMsg}</div>}
+        <button type="submit" className="auth-submit btn btn-primary btn-block">Login</button>
       </form>
     </div>
   );

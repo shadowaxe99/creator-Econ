@@ -15,7 +15,7 @@ class ContentCreator:
             title=title,
             description=description,
             price=price,
-            imageUrl=self._save_image(image_data),
+            image_url=self._generate_image_url(),
             is_sold=False,
             created_at=datetime.utcnow()
         )
@@ -42,10 +42,14 @@ class ContentCreator:
         if price:
             asset.price = price
         if image_data:
-            asset.imageUrl = self._save_image(image_data)
+            asset.image_url = self._generate_image_url()
 
         asset.updated_at = datetime.utcnow()
-        db.session.commit()
+        try:
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            raise e
         return asset
 
     def delete_asset(self, asset_id):

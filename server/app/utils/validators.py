@@ -3,11 +3,6 @@ import re
 from typing import Optional
 from app.database.models import Asset
 
-def is_valid_asset_price(price: float) -> str:
-    """Validate the asset price."""
-    # For future implementation
-    return ''
-
 def is_valid_asset_id(asset_id: str) -> str:
     """Validate the asset ID format and existence."""
     if not re.match(r'^[0-9a-f]{24}$', asset_id):
@@ -18,9 +13,6 @@ def is_valid_asset_id(asset_id: str) -> str:
 
 def is_valid_address(address: str) -> str:
     """Validate the blockchain address format."""
-    if not re.match(r'^0x[a-f0-9]{40}$', address):
-        return 'Invalid blockchain address format.'
-    return ''
 
 def get_asset_by_id(asset_id: str) -> Optional[Asset]:
     """Retrieve an asset by its ID if it exists and is not sold."""
