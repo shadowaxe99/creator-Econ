@@ -3,9 +3,9 @@ import '../styles/globals.css';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="footer" role="contentinfo">
-      <div className="container">
-        <span className="text-muted" aria-label="Copyright Information">© 2023 Elysium Marketplace</span>
+    <footer className="footer container" role="contentinfo">
+      <div>
+        <span className="text-muted" aria-label="Copyright 2023 Elysium Marketplace">© 2023 Elysium Marketplace</span>
       </div>
     </footer>
   );
